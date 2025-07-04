@@ -1,7 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+import joblib
 
 app = FastAPI()
+
+model = joblib.load('model.joblib')
 
 @app.get("/makeitdubble/")
 def make_it_dubble(number : int) :
@@ -24,3 +27,10 @@ def get_salary(salary : float, bonus : float, taxes : float) :
 def calculate(data: Salary):
     net_salary = data.salary + data.bonus - data.taxes
     return {"net_salary" : net_salary}
+
+@app.get("/modelinfo/")
+def model_info():
+    try:
+        return {"model_type": str(type(model))}
+    except Exception as e:
+        return {"error": str(e)}
