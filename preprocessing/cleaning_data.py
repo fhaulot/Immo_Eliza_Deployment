@@ -57,11 +57,33 @@ class Preprocessing :
         """
         Add geographical coordinates (latitude and longitude) to the DataFrame based on postcodes.
         """
-        df_postcode = pd.read_csv(r'C:\Users\fhaul\Documents\GitHub\Immo_Eliza_Regression\belgian-cities-geocoded (1).csv')
+        df_postcode = pd.read_csv(r'C:\Users\fhaul\Documents\GitHub\Intro_deployement\preprocessing\belgian-cities-geocoded (1).csv')
         df_postcode = df_postcode.astype({'postCode': 'int64'})
         # df_postcode.info()
         df
         df = pd.merge(df, df_postcode[['postCode', 'lat', 'lng']], on='postCode', how='left')
         df = df.drop(columns=["postCode"], axis=1)
         return df
+    
+def preprocess(data: dict) -> pd.DataFrame:
+    try:
+        df = pd.DataFrame([data])
+
+        # Checking for required fields
+        required_fields = ['province', 'subtype', 'buildingCondition', 'epcScore', 'postCode', 'hasParking', 'bedroomCount', 'habitableSurface', 'hasTerrace', 'gardenSurface']
+        missing = [field for field in required_fields if field not in df.columns]
+        if missing:
+            raise ValueError(f"Missing fields: {', '.join(missing)}")
+
+        processor = Preprocessing()
+        # calling the preprocessing methods        
+        df = processor.ordinal_building_condition(df)
+        df = processor.ordinal_epc_score(df)
+        df = processor.categorical_encode(df)
+        df = processor.postcode_geo(df)
+
+        return df
+
+    except Exception as e:
+        raise ValueError(f"Preprocessing error: {e}")
     
