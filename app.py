@@ -1,19 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import json
-import os
+from typing import Optional, Literal, Union
+from predict import predict
 import joblib
-from typing import Union, Literal, Optional
-import predict
-from fastapi import HTTPException
-import predict
+import os
+current_dir = os.path.dirname(__file__)
+model_path = os.path.join(current_dir, 'model', 'feature_columns.pkl')
+expected_columns = joblib.load(model_path)
 
-# Set port to the env variable PORT to make it easy to choose the port on the server
-# If the Port env variable is not set, use port 8000
-PORT = os.environ.get("PORT", 8000)
-app = FastAPI(port=PORT)
 
-class propertydata(BaseModel):
+app = FastAPI()
+
+class PropertyData(BaseModel):
     subtype: Optional[Literal["APARTMENT", "HOUSE"]] = "HOUSE"
     bedroomCount: int = 4
     province: str = "Namur"
@@ -25,40 +23,17 @@ class propertydata(BaseModel):
     epcScore: Optional[str] = "C"
     hasParking: Optional[bool] = True
 
-
-
 @app.get("/")
-async def root():
-    """Route that return 'Alive!' if the server runs."""
-    return {"Status": "Alive!"}
+def root():
+    return {"status": "alive"}
 
 @app.get("/about")
 def about():
-    return {
-        "title": "Property Price Prediction API",
-        "description": "This API predicts the price of properties (houses or apartments) based on various features such as construction year, area, location, and more.",
-        "usage_instructions": [
-            "To get an accurate prediction, make sure to enter the correct location (locality) and zip code.",
-            "The location and zip code are used to fetch the latitude and longitude, which are important for accurate price estimation.",
-            "Please double-check that the locality name matches exactly, and ensure the zip code corresponds to that locality.",
-            "Incorrect or missing location information may lead to inaccurate or failed predictions."
-        ],
-        "note": "Be careful when entering the location and zip code to ensure accurate results. The more precise your inputs, the better the prediction accuracy.",
-    }
-
+    return {"message": "Use POST /predict with proper JSON payload to get predictions."}
 
 @app.post("/predict", response_model=Union[float, str])
-def predict(property_details: propertydata):
+def make_prediction(property: PropertyData):
     try:
-        # Call the correct function from predict.py
-        prediction = predict.dump(property_details)
-        return prediction
+        return predict.predict(property.dict())
     except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
-
-
-"""
-Server started at http://127.0.0.1:8000
-Documentation at http://127.0.0.1:8000/docs
-"""
-
+        raise HTTPException(status_code=400, detail=f"Prediction failed: {e}")
