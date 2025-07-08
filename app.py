@@ -7,10 +7,15 @@ import os
 current_dir = os.path.dirname(__file__)
 model_path = os.path.join(current_dir, 'model', 'feature_columns.pkl')
 expected_columns = joblib.load(model_path)
-
+"""
+Loading libraries and models. Also the current path for the model and the expected columns.
+We use it to ensure that the input data for prediction has the same structure as the training data.
+"""
 
 app = FastAPI()
-
+"""
+Creating the FastAPI app (local)
+"""
 class PropertyData(BaseModel):
     subtype: Optional[Literal["APARTMENT", "HOUSE"]] = "HOUSE"
     bedroomCount: int = 4
@@ -22,14 +27,17 @@ class PropertyData(BaseModel):
     hasTerrace: Optional[bool] = True
     epcScore: Optional[str] = "C"
     hasParking: Optional[bool] = True
+"""
+Creating the basemodel from pydantic to define the differents features for the future POST requests and typing them. We used some value 
+"by default" that will alow to test the api and different set after, seeing if the model works.
+"""
 
 @app.get("/")
 def root():
-    return {"status": "alive"}
-
-@app.get("/about")
-def about():
-    return {"message": "Use POST /predict with proper JSON payload to get predictions."}
+    return {"status": "alive! To know more informations about this prediction model, you may go on the /docs route and the /predict request"}
+"""
+We use a get request to see if the api is working. Ang get the developer to the documentation. 
+"""
 
 @app.post("/predict", response_model=Union[float, str])
 def make_prediction(property: PropertyData):
@@ -37,3 +45,7 @@ def make_prediction(property: PropertyData):
         return predict.predict(property.dict())
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Prediction failed: {e}")
+"""
+The heart of our project. We are calling the basemodel as an input (You may do it with curl but I prefer to do it directly on the docs of
+the fast API). It put the basemodel in the predict.py who will call the preprocessing and then will apply the model on the input basemodel. 
+If something wen't wrong, it will raise an error. Then, it will return a float."""

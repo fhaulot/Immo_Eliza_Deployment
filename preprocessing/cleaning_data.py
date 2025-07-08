@@ -59,26 +59,34 @@ class Preprocessing :
         df = pd.merge(df, df_postcode[['postCode', 'lat', 'lng']], on='postCode', how='left')
         df = df.drop(columns=["postCode"], axis=1)
         return df
-
+    
+# Creating a preprocess function to handle the input data and apply the preprocessing steps
 def preprocess(data: dict) -> pd.DataFrame:
     try:
         df = pd.DataFrame([data])
 
-        # Checking for required fields
         required_fields = ['province', 'subtype', 'buildingCondition', 'epcScore', 'postCode', 'hasParking', 'bedroomCount', 'habitableSurface', 'hasTerrace', 'gardenSurface']
         missing = [field for field in required_fields if field not in df.columns]
         if missing:
             raise ValueError(f"Missing fields: {', '.join(missing)}")
+        """
+        Calling the required fields and raising error in case of missing data
+        """
 
-        processor = Preprocessing()
-        # calling the preprocessing methods        
+        processor = Preprocessing()   
         df = processor.ordinal_building_condition(df)
         df = processor.ordinal_epc_score(df)
         df = processor.categorical_encode(df)
         df = processor.postcode_geo(df)
-
         return df
+        """
+        Calling the differents functions, just not the drop columns as they won't be asked in the output
+        """
 
     except Exception as e:
         raise ValueError(f"Preprocessing error: {e}")
+"""
+We get all the functions of the Preprocessing class to apply them on the input data and raise an error if the input data is not correct.
+This code will be used in the predict.py file to preprocess the input data before making predictions.
+"""
     
