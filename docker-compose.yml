@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  real-estate-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+    volumes:
+      # Mount your model files if they're stored locally
+      - ./models:/app/models
+      # Mount logs directory (optional)
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
