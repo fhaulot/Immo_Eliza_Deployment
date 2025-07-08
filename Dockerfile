@@ -1,32 +1,17 @@
-# Use Ubuntu as base image
-FROM ubuntu:22.04
+# Use Python base image
+FROM python:3.10-slim
 
-# Set environment variables to avoid interactive prompts during package installs
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install Python 3.10 and other necessary tools
-RUN apt-get update && \
-    apt-get install -y python3.10 python3.10-venv python3.10-dev python3-pip curl && \
-    rm -rf /var/lib/apt/lists/*
-
-# Upgrade pip and install dependencies
-RUN python3.10 -m pip install --upgrade pip
-
-# Create working directory
-RUN mkdir /app
+# Set working directory
 WORKDIR /app
 
-# Copy your project files to /app
+# Copy all project files
 COPY . /app
 
-# Install Python dependencies from requirements.txt if exists,
-# otherwise install manually (adjust as needed)
-# If you don't have requirements.txt, list your dependencies here
-COPY requirements.txt /app/requirements.txt
-RUN pip install -r requirements.txt
+# Install dependencies
+RUN pip install --no-cache-dir fastapi uvicorn pandas scikit-learn
 
-# Expose port (default FastAPI port)
+# Expose port (FastAPI runs on 8000)
 EXPOSE 8000
 
-# Command to run the app
-CMD ["python3.10", "app.py"]
+# Run FastAPI app
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
