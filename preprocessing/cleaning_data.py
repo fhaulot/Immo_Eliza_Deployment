@@ -1,11 +1,5 @@
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-from sklearn.preprocessing import OneHotEncoder
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-
+import os 
 class Preprocessing : 
 
     def __init__(self):
@@ -57,7 +51,9 @@ class Preprocessing :
         """
         Add geographical coordinates (latitude and longitude) to the DataFrame based on postcodes.
         """
-        df_postcode = pd.read_csv(r'C:\Users\fhaul\Documents\GitHub\Intro_deployement\preprocessing\belgian-cities-geocoded (1).csv')
+        current_dir = os.path.dirname(__file__)
+        csv_path = os.path.join(current_dir, "preprocessing", "belgian_geocoded.csv")
+        df_postcode = pd.read_csv(csv_path)
         df_postcode = df_postcode.astype({'postCode': 'int64'})
         # df_postcode.info()
         df

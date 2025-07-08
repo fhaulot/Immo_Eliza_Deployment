@@ -5,9 +5,12 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.impute import SimpleImputer
 from xgboost import XGBRegressor
 import joblib
+import os
 
-
-df = pd.read_csv(r"C:\Users\fhaul\Documents\GitHub\Intro_deployement\preprocessing\preprocessed_data.csv")
+current_dir = os.path.dirname(__file__)
+parent_dir = os.path.dirname(current_dir)
+csv_path = os.path.join(parent_dir, "preprocessing", "preprocessed_data.csv")
+df = pd.read_csv(csv_path)
 X = df.drop("price", axis=1)
 y = df["price"]
 
