@@ -1,6 +1,10 @@
-fastapi
-uvicorn
+xgboost==1.7.6 
+fastapi==0.75.0
+uvicorn==0.15.0
 pydantic
 scikit-learn
+pandas
 joblib
-xgboost
+streamlit
+requests
+
