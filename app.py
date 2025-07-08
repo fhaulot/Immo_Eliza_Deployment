@@ -34,7 +34,8 @@ Creating the basemodel from pydantic to define the differents features for the f
 
 @app.get("/")
 def root():
-    return {"status": "alive! To know more informations about this prediction model, you may go on the /docs route and the /predict request"}
+    return {"Welcome to the Belgian property prediction price tool! For more informations about this prediction model, you may go on the https://intro-deployement.onrender.com//docs "
+    "route and try the /predict request to use this tool"}
 """
 We use a get request to see if the api is working. Ang get the developer to the documentation. 
 """
@@ -49,3 +50,5 @@ def make_prediction(property: PropertyData):
 The heart of our project. We are calling the basemodel as an input (You may do it with curl but I prefer to do it directly on the docs of
 the fast API). It put the basemodel in the predict.py who will call the preprocessing and then will apply the model on the input basemodel. 
 If something wen't wrong, it will raise an error. Then, it will return a float."""
+
+# The API was pushed on Render : https://intro-deployement.onrender.com/docs
