@@ -38,7 +38,7 @@ if submit:
         }
 
         try:
-            # 🔁 Remplace cette URL par celle de ton API Render FastAPI
+            # 
             url = "https://intro-deployement.onrender.com/predict"
             response = requests.post(url, json=payload)
 

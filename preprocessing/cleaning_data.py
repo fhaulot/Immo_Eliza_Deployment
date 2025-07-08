@@ -56,11 +56,10 @@ class Preprocessing :
         df_postcode = pd.read_csv(csv_path)
         df_postcode = df_postcode.astype({'postCode': 'int64'})
         # df_postcode.info()
-        df
         df = pd.merge(df, df_postcode[['postCode', 'lat', 'lng']], on='postCode', how='left')
         df = df.drop(columns=["postCode"], axis=1)
         return df
-    
+
 def preprocess(data: dict) -> pd.DataFrame:
     try:
         df = pd.DataFrame([data])

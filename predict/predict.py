@@ -1,6 +1,5 @@
 import joblib
-import pandas as pd
-from preprocessing.cleaning_data import preprocess
+from preprocessing.cleaning_data import preprocess  
 
 # Charger le modèle et les colonnes attendues
 model = joblib.load("model/model.pkl")
