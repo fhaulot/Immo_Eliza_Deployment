@@ -24,6 +24,7 @@ app = FastAPI(
     description="Machine learning-based price predictions for Belgian real estate properties using XGBoost",
     version="1.0.0",
     docs_url="/docs",
+    docs_from_flash="/docs-interactive",
     redoc_url="/redoc"
 )
 
