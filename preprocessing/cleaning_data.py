@@ -52,7 +52,7 @@ class Preprocessing :
         Add geographical coordinates (latitude and longitude) to the DataFrame based on postcodes.
         """
         current_dir = os.path.dirname(__file__)
-        csv_path = os.path.join(current_dir, "preprocessing", "belgian_geocoded.csv")
+        csv_path = os.path.join(current_dir, "belgian_geocoded.csv")
         df_postcode = pd.read_csv(csv_path)
         df_postcode = df_postcode.astype({'postCode': 'int64'})
         # df_postcode.info()
