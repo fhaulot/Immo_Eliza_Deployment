@@ -1,15 +1,16 @@
-# Immo_Eliza_Deployement NEED CORRECTION
+# Immo_Eliza_Deployement
 
 ```
-Immo_eliza_deployment/ NEED CORRECTION
+Immo_eliza_deployment
 │
 ├── app.py
 ├── Dockerfile
+├── base_house.json
 ├── README.md
 ├── requirements.txt
-│
+├── georef-belgium-postal-codes.csv
 ├── model/
-│   └── model.pkl  # Saved ML model (via joblib/pickle)
+│   └── model.pkl 
 │   └── run_model_trainer.py
 │
 ├── preprocessing/
