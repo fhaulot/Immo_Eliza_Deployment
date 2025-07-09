@@ -1,4 +1,4 @@
-# Immo_Eliza_Deployement
+# Immo_Eliza_Deployement NEED CORRECTION
 
 ```
 Immo_eliza_deployment/ NEED CORRECTION
@@ -18,7 +18,7 @@ Immo_eliza_deployment/ NEED CORRECTION
 ├── predict/
 │   └── prediction.py
 │
-└── streamlit_app.py
+└── streamlit.py
 
 ```
 
@@ -78,7 +78,7 @@ Here’s the flow:
 ```User → Streamlit frontend → FastAPI API → Model → Prediction → Back to user```
 
 ### How It Connects to the Model
-- streamlit_app.py does not touch the model directly
+- streamlit.py does not touch the model directly
 - It sends a request to FastAPI using requests.post(...)
 - FastAPI handles:
 - Input validation (pydantic)
@@ -95,7 +95,7 @@ Here’s the flow:
          └──────────  prediction response  ◀──────────┘
 ```
 
-## How to Run It All NEED CORRECTION TO THE STREAMLIT PART
+## How to Run It
 
 1.	Install dependencies
 
@@ -118,5 +118,5 @@ Here’s the flow:
 4.	In another terminal, run Streamlit
 
     ```
-    streamlit run streamlit_app.py
+    streamlit run streamlit.py
     ```
