@@ -1,7 +1,7 @@
-# Intro_deployement
+# Immo_Eliza_Deployement
 
 ```
-immoeliza-api/
+Immo_eliza_deployment/ NEED CORRECTION
 │
 ├── app.py
 ├── Dockerfile
@@ -28,20 +28,44 @@ immoeliza-api/
 
 | Method | Route       | Description                              |
 |--------|-------------|------------------------------------------|
-| GET    | `/`         | Health check, returns `alive`           |
-| GET    | `/predict`  | Returns JSON structure description      |
-| POST   | `/predict`  | Accepts JSON input and returns prediction|
+| GET    | `/`         | Home page with basic information         |
+| GET    | `/health`  | Health check endoint for monitoring     |
+| GET    | `/docs-interactive`  | Interactive documentation with testing capabilities|
+| GET    | `/model/info`  | Information about the loaded model       |
+| POST   | `/predict`  | Accepts property data and returns predicted price in EUR. All parameters are optional - missing values will be filled with defaults. |
 
 ## 🧾 JSON Input Format
 
 ```json
 {
-  "data": {
-    "area": 120,
-    "property-type": "HOUSE",
-    "rooms-number": 4,
-    "zip-code": 1000
-  }
+    "bedroomCount": 2,
+    "bathroomCount": 1,
+    "habitableSurface": 100,
+    "toiletCount": 1,
+    "terraceSurface": 0,
+    "gardenSurface": 0,
+    "totalParkingCount": 0,
+    "province": "Brussels",
+    "type": "APARTMENT",
+    "subtype": "APARTMENT",
+    "epcScore": "C",
+    "hasAttic": false,
+    "hasGarden": false,
+    "hasAirConditioning": false,
+    "hasArmoredDoor": true,
+    "hasVisiophone": false,
+    "hasTerrace": false,
+    "hasOffice": false,
+    "hasSwimmingPool": false,
+    "hasFireplace": false,
+    "hasBasement": false,
+    "hasDressingRoom": false,
+    "hasDiningRoom": false,
+    "hasLift": false,
+    "hasHeatPump": false,
+    "hasPhotovoltaicPanels": false,
+    "hasLivingRoom": true,
+    "postCode": "1000"
 }
 ```
 
@@ -65,13 +89,13 @@ Here’s the flow:
 ```
 +------------------+       HTTP POST       +-----------------+        +--------------+
 |  Streamlit UI    |  ──────────────────▶  |   FastAPI API   |  ───▶  |   ML Model   |
-| (streamlit_app)  |     house features    |   (app.py)       |        |  (joblib)    |
+| (streamlit_app)  |     house features    |   (app.py)       |        |  (pkl)    |
 +------------------+                      +-----------------+        +--------------+
          ▲                                            ▼
          └──────────  prediction response  ◀──────────┘
 ```
 
-## How to Run It All
+## How to Run It All NEED CORRECTION TO THE STREAMLIT PART
 
 1.	Install dependencies
 
@@ -82,7 +106,7 @@ Here’s the flow:
 2.	Train model (once)
 
     ```
-    python model/run_model_trainer.py
+    python model/predict.py
     ```
 
 3.	Run FastAPI backend
